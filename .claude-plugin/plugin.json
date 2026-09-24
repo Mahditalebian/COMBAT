@@ -1,6 +1,6 @@
 {
   "name": "combat",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Universal agent operating core: triage, system modeling, ranked hypotheses, evidence discipline, deep search, web extraction, verification, safety gates and stop policy.",
   "author": {
     "name": "Mahditalebian",
