@@ -14,7 +14,7 @@ prove success before claiming it, gate irreversible actions, stop honestly.
 |---|---|---|
 | Claude Code | `/plugin marketplace add Mahditalebian/COMBAT` → `/plugin install combat@combat` | ✅ v2.1.197 — `Status: enabled`, 10 skills + 2 commands |
 | Codex CLI | `codex plugin marketplace add Mahditalebian/COMBAT` → `codex plugin add combat@combat` | ✅ v0.156.1 — `installed, enabled`, 10 skills |
-| OpenCode | `curl -fsSL .../install.sh \| bash -s -- opencode` | ✅ v1.18.32 — `opencode debug skill` lists all 10 |
+| OpenCode | add to `opencode.json`: `"plugin": ["combat-core@git+https://github.com/Mahditalebian/COMBAT.git"]` | ✅ v1.18.32 — real JS plugin; `opencode debug skill` lists all 10 in a project with no skill files |
 | Codebuff / Freebuff | `curl -fsSL .../install.sh \| bash -s -- freebuff` | file layout matches documented discovery paths |
 | Cursor · Windsurf · Copilot · any | see the installer table below | file layout only |
 
@@ -23,6 +23,28 @@ Check any installation with:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Mahditalebian/COMBAT/main/verify.sh | bash
 ```
+
+### OpenCode
+
+COMBAT ships a real OpenCode plugin module (`plugin/opencode.js`), not just
+loose skill files. Add one line to `opencode.json`:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["combat-core@git+https://github.com/Mahditalebian/COMBAT.git"]
+}
+```
+
+V2 uses `"plugins"` instead of `"plugin"`. Restart OpenCode, then confirm:
+
+```bash
+opencode debug skill | grep -c '"name": "combat-'   # -> 10
+```
+
+The plugin registers all 10 skills (V1 via the `config` hook, V2 via
+`ctx.skill.transform`) and injects the COMBAT kernel into the first user
+message of each top-level session.
 
 ## Install as a plugin
 
