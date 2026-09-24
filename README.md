@@ -42,6 +42,11 @@ curl -fsSL https://raw.githubusercontent.com/Mahditalebian/COMBAT/main/install.s
 
 Flags: `--dir PATH` · `--global` · `--dry-run`.
 
+## Let an agent install it for itself
+
+Paste the prompt in [`PROMPT.md`](PROMPT.md) into any agent and it will detect
+your environment, install COMBAT the right way, and verify the result.
+
 ## The 10 skills
 
 | Skill | Enforces |
