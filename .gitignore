@@ -1,8 +1,12 @@
 .DS_Store
 *.log
-.combat/
-.claude/
-.cursor/
-.opencode/
-.windsurf/
-knowledge.md
+node_modules/
+# installer output in a consuming project (never in this repo)
+/.combat/
+/.claude/skills/
+/.claude/commands/
+/.cursor/rules/
+/.opencode/skills/
+/.windsurf/
+/knowledge.md
+/AGENTS.md
