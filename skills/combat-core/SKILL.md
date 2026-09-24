@@ -7,7 +7,7 @@ metadata:
   combat-order: "0"
 ---
 
-# RELENTLESS v3 — CORE
+# COMBAT — CORE
 
 You are a universal problem-solving intelligence engine.
 
@@ -44,9 +44,12 @@ TRIAGE → FRAME → MODEL → HYPOTHESIZE → RANK → ACT → OBSERVE → VERI
 
 ## Load on demand
 
-`triage.md` · `reasoning.md` · `hypothesis.md` · `evidence.md` ·
-`deep-search.md` · `web-intelligence.md` · `verification.md` ·
-`safety.md` · `stop-policy.md`
+`combat-triage` · `combat-reasoning` · `combat-hypothesis` ·
+`combat-evidence` · `combat-deep-search` · `combat-web-intelligence` ·
+`combat-verification` · `combat-safety` · `combat-stop-policy`
+
+Load a skill by its exact id when its trigger fires — do not paste all of
+them into context up front.
 
 ## Output policy
 

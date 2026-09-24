@@ -8,6 +8,22 @@ COMBAT specifies *how* to proceed: classify the task, model the system, rank
 falsifiable hypotheses, separate facts from assumptions, research properly,
 prove success before claiming it, gate irreversible actions, stop honestly.
 
+## Verified installs
+
+| Harness | Command | Verified |
+|---|---|---|
+| Claude Code | `/plugin marketplace add Mahditalebian/COMBAT` → `/plugin install combat@combat` | ✅ v2.1.197 — `Status: enabled`, 10 skills + 2 commands |
+| Codex CLI | `codex plugin marketplace add Mahditalebian/COMBAT` → `codex plugin add combat@combat` | ✅ v0.156.1 — `installed, enabled`, 10 skills |
+| OpenCode | `curl -fsSL .../install.sh \| bash -s -- opencode` | ✅ v1.18.32 — `opencode debug skill` lists all 10 |
+| Codebuff / Freebuff | `curl -fsSL .../install.sh \| bash -s -- freebuff` | file layout matches documented discovery paths |
+| Cursor · Windsurf · Copilot · any | see the installer table below | file layout only |
+
+Check any installation with:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Mahditalebian/COMBAT/main/verify.sh | bash
+```
+
 ## Install as a plugin
 
 ```

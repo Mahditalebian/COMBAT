@@ -13,7 +13,9 @@
       "policy": {
         "installation": "AVAILABLE"
       },
-      "category": "Developer Tools"
+      "category": "Developer Tools",
+      "version": "4.0.3",
+      "description": "Universal agent operating core: triage, modeling, ranked hypotheses, evidence discipline, deep search, web extraction, verification, safety gates, stop policy."
     }
   ]
 }

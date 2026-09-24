@@ -30,7 +30,7 @@ COMPLEX
     - external or missing information
     - irreversible or high-consequence actions
     - prior attempt already failed
-  → Activate full RELENTLESS mode (load all skills).
+  → Activate full COMBAT mode (load all skills).
 ```
 
 ## Escalation triggers (re-triage mid-task)
