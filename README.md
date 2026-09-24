@@ -12,13 +12,13 @@ that compile them into whatever format your tool expects.
 
 ```bash
 # in your project root
-curl -fsSL https://raw.githubusercontent.com/USER/relentless/main/install.sh | bash -s -- cursor
+curl -fsSL https://raw.githubusercontent.com/Mahditalebian/rls-8ef9929b/main/install.sh | bash -s -- cursor
 ```
 
 Or clone and run:
 
 ```bash
-git clone https://github.com/USER/relentless.git
+git clone https://github.com/Mahditalebian/rls-8ef9929b.git
 cd your-project && /path/to/relentless/install.sh claude-code
 ```
 
@@ -70,16 +70,18 @@ relentless/
 
 Edit files in `skills/` only, then re-run the installer to recompile.
 
-## Publishing your own copy
+## Forking to your own account
 
 ```bash
-cd relentless
-git init && git add -A && git commit -m "RELENTLESS v3"
-gh repo create relentless --public --source=. --push
-# then replace USER in install.sh + README with your GitHub username
+gh repo fork Mahditalebian/rls-8ef9929b --clone
+# then point REPO_RAW in install.sh at your fork
 ```
 
-Tag releases so users can pin: `git tag v3.0.0 && git push --tags`.
+Pin a version instead of tracking `main`:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Mahditalebian/rls-8ef9929b/v3.0.0/install.sh | bash -s -- cursor
+```
 
 ## License
 

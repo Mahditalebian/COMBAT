@@ -2,13 +2,13 @@
 # RELENTLESS v3 installer
 # Usage:
 #   ./install.sh <target> [--dir PATH] [--global] [--dry-run]
-#   curl -fsSL https://raw.githubusercontent.com/USER/relentless/main/install.sh | bash -s -- cursor
+#   curl -fsSL https://raw.githubusercontent.com/Mahditalebian/rls-8ef9929b/main/install.sh | bash -s -- cursor
 #
 # Targets: cursor | claude-code | codex | windsurf | agents-md | copilot | plain
 
 set -euo pipefail
 
-REPO_RAW="${RELENTLESS_RAW:-https://raw.githubusercontent.com/USER/relentless/main}"
+REPO_RAW="${RELENTLESS_RAW:-https://raw.githubusercontent.com/Mahditalebian/rls-8ef9929b/main}"
 SKILLS=(core triage reasoning hypothesis evidence deep-search web-intelligence verification safety stop-policy)
 
 TARGET="${1:-}"
