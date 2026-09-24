@@ -1,0 +1,21 @@
+{
+  "name": "relentless",
+  "version": "3.0.0",
+  "title": "RELENTLESS v3 — Universal Agent Operating Core",
+  "description": "A modular decision core for autonomous agents: triage, system modeling, ranked hypotheses, evidence discipline, deep search, web extraction, verification, safety gates and stop policy.",
+  "license": "MIT",
+  "entry": "skills/core.md",
+  "skills": [
+    { "id": "core",             "file": "skills/core.md",             "activation": "always" },
+    { "id": "triage",           "file": "skills/triage.md",           "activation": "always" },
+    { "id": "reasoning",        "file": "skills/reasoning.md",        "activation": "standard|complex" },
+    { "id": "hypothesis",       "file": "skills/hypothesis.md",       "activation": "diagnosis|complex" },
+    { "id": "evidence",         "file": "skills/evidence.md",         "activation": "always" },
+    { "id": "deep-search",      "file": "skills/deep-search.md",      "activation": "missing-information" },
+    { "id": "web-intelligence", "file": "skills/web-intelligence.md", "activation": "web-data-extraction" },
+    { "id": "verification",     "file": "skills/verification.md",     "activation": "before-success-claim" },
+    { "id": "safety",           "file": "skills/safety.md",           "activation": "always" },
+    { "id": "stop-policy",      "file": "skills/stop-policy.md",      "activation": "always" }
+  ],
+  "targets": ["cursor", "claude-code", "codex", "windsurf", "agents-md", "copilot", "plain"]
+}
