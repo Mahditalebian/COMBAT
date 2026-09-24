@@ -15,8 +15,13 @@ prove success before claiming it, gate irreversible actions, stop honestly.
 /plugin install combat@combat
 ```
 
-Then use `/combat <task>` to engage the full loop, or let the agent load
-individual skills on demand.
+Then use `/combat:combat <task>` to engage the full loop, or let the agent
+load individual skills on demand. Plugin components are namespaced with the
+plugin name.
+
+Verified against Claude Code v2.1.197: `claude plugin validate` passes and
+`/plugin install combat@combat` reports `Status: enabled` with all 10 skills
+and 2 commands loaded.
 
 Plugin manifests ship for Claude Code (`.claude-plugin/`), Codex
 (`.codex-plugin/`), Cursor (`.cursor-plugin/`), OpenCode (`.opencode-plugin/`)
