@@ -26,11 +26,18 @@ cd your-project && /path/to/relentless/install.sh claude-code
 |---|---|---|
 | Cursor | `install.sh cursor` | `.cursor/rules/relentless-*.mdc` |
 | Claude Code | `install.sh claude-code` | `.claude/skills/relentless-*/SKILL.md` |
+| OpenCode | `install.sh opencode` | `.opencode/skills/relentless-*/SKILL.md` + `AGENTS.md` |
+| Codebuff / Freebuff | `install.sh codebuff` (or `freebuff`) | `.agents/skills/relentless-*/SKILL.md` + `knowledge.md` |
 | Codex / generic | `install.sh codex` | `AGENTS.md` + `.relentless/` |
 | Windsurf | `install.sh windsurf` | `.windsurf/rules/` |
 | Any agent (portable) | `install.sh agents-md` | single `AGENTS.md` |
 | GitHub Copilot | `install.sh copilot` | `.github/copilot-instructions.md` |
 | Raw files | `install.sh plain` | `.relentless/` |
+
+On OpenCode and Codebuff/Freebuff the always-on kernel (`core` + `triage` +
+`safety` + `stop-policy`) goes into `AGENTS.md` / `knowledge.md`, while the
+remaining six skills stay on disk and are pulled in on demand via the `skill`
+tool (`/skill:relentless-hypothesis`). This keeps resident context small.
 
 Flags: `--dir PATH` · `--global` (user-level, where supported) · `--dry-run`.
 

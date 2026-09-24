@@ -4,7 +4,8 @@
 #   ./install.sh <target> [--dir PATH] [--global] [--dry-run]
 #   curl -fsSL https://raw.githubusercontent.com/Mahditalebian/COMBAT/main/install.sh | bash -s -- cursor
 #
-# Targets: cursor | claude-code | codex | windsurf | agents-md | copilot | plain
+# Targets: cursor | claude-code | opencode | codebuff | freebuff | codex |
+#          windsurf | agents-md | copilot | plain
 
 set -euo pipefail
 
@@ -35,6 +36,9 @@ RELENTLESS v3 — installer
 
   ./install.sh cursor        -> .cursor/rules/*.mdc          (project)
   ./install.sh claude-code   -> .claude/skills/<name>/SKILL.md
+  ./install.sh opencode      -> .opencode/skills/<name>/SKILL.md + AGENTS.md
+  ./install.sh codebuff      -> .agents/skills/<name>/SKILL.md + knowledge.md
+  ./install.sh freebuff      -> alias of codebuff
   ./install.sh codex         -> AGENTS.md + .relentless/
   ./install.sh windsurf      -> .windsurf/rules/
   ./install.sh agents-md     -> AGENTS.md (single file, portable)
@@ -101,6 +105,40 @@ case "$TARGET" in
       f="$SRC/$s.md"; [ -f "$f" ] || continue
       strip_fm "$f" | write "$ROOT/.windsurf/rules/relentless-$s.md"
     done
+    ;;
+  opencode)
+    base="$ROOT/.opencode/skills"; agents="$ROOT/AGENTS.md"
+    if [ "$GLOBAL" = 1 ]; then
+      base="$HOME/.config/opencode/skills"; agents="$HOME/.config/opencode/AGENTS.md"
+    fi
+    say "installing OpenCode skills -> $base"
+    for s in "${SKILLS[@]}"; do
+      f="$SRC/$s.md"; [ -f "$f" ] || continue
+      { printf -- '---\nname: relentless-%s\ndescription: %s Use when: %s\nlicense: MIT\n---\n\n' \
+          "$s" "$(desc_of "$f")" "$(act_of "$f")"
+        strip_fm "$f"; } | write "$base/relentless-$s/SKILL.md"
+    done
+    say "writing always-on kernel -> $agents"
+    { for s in core triage safety stop-policy; do strip_fm "$SRC/$s.md"; printf '\n---\n\n'; done
+      printf '## On-demand skills\n\nLoad with the `skill` tool by exact id:\n\n'
+      for s in "${SKILLS[@]}"; do printf -- '- `relentless-%s` — %s\n' "$s" "$(desc_of "$SRC/$s.md")"; done
+    } | write "$agents"
+    ;;
+  codebuff|freebuff)
+    base="$ROOT/.agents/skills"; know="$ROOT/knowledge.md"
+    if [ "$GLOBAL" = 1 ]; then base="$HOME/.agents/skills"; know="$HOME/.knowledge.md"; fi
+    say "installing Codebuff/Freebuff skills -> $base"
+    for s in "${SKILLS[@]}"; do
+      f="$SRC/$s.md"; [ -f "$f" ] || continue
+      { printf -- '---\nname: relentless-%s\ndescription: %s Use when: %s\nlicense: MIT\nmetadata:\n  category: reasoning\n---\n\n' \
+          "$s" "$(desc_of "$f")" "$(act_of "$f")"
+        strip_fm "$f"; } | write "$base/relentless-$s/SKILL.md"
+    done
+    say "writing knowledge file -> $know"
+    { for s in core triage safety stop-policy; do strip_fm "$SRC/$s.md"; printf '\n---\n\n'; done
+      printf '## On-demand skills\n\nInvoke with `/skill:<id>` or let the agent load them:\n\n'
+      for s in "${SKILLS[@]}"; do printf -- '- `relentless-%s` — %s\n' "$s" "$(desc_of "$SRC/$s.md")"; done
+    } | write "$know"
     ;;
   codex|plain)
     say "installing raw skills -> $ROOT/.relentless"
