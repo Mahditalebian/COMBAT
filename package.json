@@ -1,22 +1,32 @@
 {
   "name": "combat-core",
-  "version": "4.1.0",
-  "description": "COMBAT — universal agent operating core: triage, system modeling, ranked hypotheses, evidence discipline, deep search, web extraction, verification, safety gates and stop policy.",
+  "version": "4.1.1",
+  "description": "COMBAT \u2014 universal agent operating core: triage, system modeling, ranked hypotheses, evidence discipline, deep search, web extraction, verification, safety gates and stop policy.",
   "type": "module",
-  "main": ".opencode/plugins/combat.js",
+  "main": "./plugin/opencode.js",
   "exports": {
-    ".": "./.opencode/plugins/combat.js"
+    ".": "./plugin/opencode.js"
   },
   "files": [
-    ".opencode/plugins/combat.js",
+    "plugin/",
     "skills/",
     "commands/",
     "README.md",
     "LICENSE"
   ],
-  "keywords": ["opencode-plugin", "skills", "agent", "reasoning", "triage", "verification"],
+  "keywords": [
+    "opencode-plugin",
+    "skills",
+    "agent",
+    "reasoning",
+    "triage",
+    "verification"
+  ],
   "license": "MIT",
   "author": "Mahditalebian",
   "homepage": "https://github.com/Mahditalebian/COMBAT",
-  "repository": { "type": "git", "url": "git+https://github.com/Mahditalebian/COMBAT.git" }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mahditalebian/COMBAT.git"
+  }
 }
