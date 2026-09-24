@@ -12,13 +12,13 @@ that compile them into whatever format your tool expects.
 
 ```bash
 # in your project root
-curl -fsSL https://raw.githubusercontent.com/Mahditalebian/rls-8ef9929b/main/install.sh | bash -s -- cursor
+curl -fsSL https://raw.githubusercontent.com/Mahditalebian/COMBAT/main/install.sh | bash -s -- cursor
 ```
 
 Or clone and run:
 
 ```bash
-git clone https://github.com/Mahditalebian/rls-8ef9929b.git
+git clone https://github.com/Mahditalebian/COMBAT.git
 cd your-project && /path/to/relentless/install.sh claude-code
 ```
 
@@ -73,14 +73,14 @@ Edit files in `skills/` only, then re-run the installer to recompile.
 ## Forking to your own account
 
 ```bash
-gh repo fork Mahditalebian/rls-8ef9929b --clone
+gh repo fork Mahditalebian/COMBAT --clone
 # then point REPO_RAW in install.sh at your fork
 ```
 
 Pin a version instead of tracking `main`:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Mahditalebian/rls-8ef9929b/v3.0.0/install.sh | bash -s -- cursor
+curl -fsSL https://raw.githubusercontent.com/Mahditalebian/COMBAT/v3.0.0/install.sh | bash -s -- cursor
 ```
 
 ## License
