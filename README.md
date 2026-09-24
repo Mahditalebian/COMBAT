@@ -8,43 +8,37 @@ COMBAT specifies *how* to proceed: classify the task, model the system, rank
 falsifiable hypotheses, separate facts from assumptions, research properly,
 prove success before claiming it, gate irreversible actions, stop honestly.
 
-## Verified installs
+## Install
 
-| Harness | Command | Verified |
+| Harness | Command | Status |
 |---|---|---|
-| Claude Code | `/plugin marketplace add Mahditalebian/COMBAT` → `/plugin install combat@combat` | ✅ v2.1.197 — `Status: enabled`, 10 skills + 2 commands |
-| Codex CLI | `codex plugin marketplace add Mahditalebian/COMBAT` → `codex plugin add combat@combat` | ✅ v0.156.1 — `installed, enabled`, 10 skills |
-| OpenCode | add to `opencode.json`: `"plugin": ["combat-core@git+https://github.com/Mahditalebian/COMBAT.git"]` | ✅ v1.18.32 — real JS plugin; `opencode debug skill` lists all 10 in a project with no skill files |
-| Codebuff / Freebuff | `curl -fsSL .../install.sh \| bash -s -- freebuff` | file layout matches documented discovery paths |
-| Cursor · Windsurf · Copilot · any | see the installer table below | file layout only |
+| **Claude Code** | `/plugin marketplace add Mahditalebian/COMBAT` → `/plugin install combat@combat` | ✅ verified v2.1.197 |
+| **Codex CLI** | `codex plugin marketplace add Mahditalebian/COMBAT` → `codex plugin add combat@combat` | ✅ verified v0.156.1 |
+| **OpenCode** | `"plugin": ["combat-core@git+https://github.com/Mahditalebian/COMBAT.git"]` in `opencode.json` | ✅ verified v1.18.32 |
+| **Gemini CLI** | `gemini extensions install https://github.com/Mahditalebian/COMBAT.git` | ✅ verified v0.61.0 |
+| **Qwen Code** | `qwen extensions install https://github.com/Mahditalebian/COMBAT:combat` | ✅ verified v0.15.10 |
+| Cursor | `install.sh cursor` → `.cursor/rules/*.mdc` | file layout |
+| Codebuff / Freebuff | `install.sh freebuff` → `.agents/skills/` + `knowledge.md` | file layout |
+| Windsurf | `install.sh windsurf` → `.windsurf/rules/` | file layout |
+| GitHub Copilot | `install.sh copilot` → `.github/copilot-instructions.md` | file layout |
+| Anything else | `install.sh agents-md` → portable `AGENTS.md` | file layout |
 
-Check any installation with:
+"✅ verified" means the harness's own CLI was installed and the install was
+executed end to end, then the loaded skills were listed back. "file layout"
+means the files are written to the paths that harness documents, without an
+end-to-end run.
+
+Gemini CLI can also take the skills alone, without the extension:
+
+```bash
+gemini skills install https://github.com/Mahditalebian/COMBAT.git --path skills
+```
+
+Check any installation:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Mahditalebian/COMBAT/main/verify.sh | bash
 ```
-
-### OpenCode
-
-COMBAT ships a real OpenCode plugin module (`plugin/opencode.js`), not just
-loose skill files. Add one line to `opencode.json`:
-
-```json
-{
-  "$schema": "https://opencode.ai/config.json",
-  "plugin": ["combat-core@git+https://github.com/Mahditalebian/COMBAT.git"]
-}
-```
-
-V2 uses `"plugins"` instead of `"plugin"`. Restart OpenCode, then confirm:
-
-```bash
-opencode debug skill | grep -c '"name": "combat-'   # -> 10
-```
-
-The plugin registers all 10 skills (V1 via the `config` hook, V2 via
-`ctx.skill.transform`) and injects the COMBAT kernel into the first user
-message of each top-level session.
 
 ## Install as a plugin
 

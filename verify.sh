@@ -68,6 +68,11 @@ echo
 # live harness queries, when the CLI is present
 command -v claude   >/dev/null && { echo "claude plugin list:";   claude plugin list 2>/dev/null | sed -n '1,8p' | sed 's/^/    /'; echo; }
 command -v codex    >/dev/null && { echo "codex plugin list:";    codex plugin list 2>/dev/null | tail -4 | sed 's/^/    /'; echo; }
+command -v gemini   >/dev/null && { echo "gemini extensions/skills:";
+  gemini extensions list 2>/dev/null | grep -E '^. combat' | sed 's/^/    /'
+  gemini skills list 2>/dev/null | grep -cE '^combat-' | sed 's/^/    skills: /;s/$/\/10/'; echo; }
+command -v qwen     >/dev/null && { echo "qwen extensions:";
+  qwen extensions list 2>/dev/null | grep -E '^. combat' | sed 's/^/    /'; echo; }
 command -v opencode >/dev/null && { echo "opencode skills named combat-*:";
   opencode debug skill 2>/dev/null | grep -o '"name": "combat-[a-z-]*"' | sed 's/.*: //;s/"//g' | sort | sed 's/^/    /'; echo; }
 
@@ -76,6 +81,8 @@ if [ "$found_any" = 0 ]; then
   echo "  Install with one of:"
   echo "    /plugin marketplace add Mahditalebian/COMBAT   &&  /plugin install combat@combat"
   echo "    codex plugin marketplace add Mahditalebian/COMBAT  &&  codex plugin add combat@combat"
+  echo "    gemini extensions install https://github.com/Mahditalebian/COMBAT.git"
+  echo "    qwen extensions install https://github.com/Mahditalebian/COMBAT:combat"
   echo "    curl -fsSL https://raw.githubusercontent.com/Mahditalebian/COMBAT/main/install.sh | bash -s -- opencode"
   echo
   exit 1
