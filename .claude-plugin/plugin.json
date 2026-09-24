@@ -1,0 +1,24 @@
+{
+  "name": "combat",
+  "version": "4.0.0",
+  "description": "Universal agent operating core: triage, system modeling, ranked hypotheses, evidence discipline, deep search, web extraction, verification, safety gates and stop policy.",
+  "author": {
+    "name": "Mahditalebian",
+    "url": "https://github.com/Mahditalebian"
+  },
+  "homepage": "https://github.com/Mahditalebian/COMBAT",
+  "repository": "https://github.com/Mahditalebian/COMBAT",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "reasoning",
+    "triage",
+    "hypothesis",
+    "evidence",
+    "deep-search",
+    "web-scraping",
+    "verification",
+    "safety",
+    "workflow"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "combat",
+  "interface": {
+    "displayName": "COMBAT"
+  },
+  "plugins": [
+    {
+      "name": "combat",
+      "source": {
+        "source": "url",
+        "url": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

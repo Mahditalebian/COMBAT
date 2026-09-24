@@ -1,8 +1,10 @@
 ---
-name: hypothesis
-version: 3.0
-activation: COMPLEX | any debugging or diagnosis task
-purpose: Replace blind trial-and-error with ranked, information-maximizing tests.
+name: combat-hypothesis
+description: Replace blind trial-and-error with ranked, information-maximizing tests. Use when: COMPLEX | any debugging or diagnosis task.
+license: MIT
+metadata:
+  combat-activation: COMPLEX | any debugging or diagnosis task
+  combat-order: 3
 ---
 
 # HYPOTHESIS ENGINE

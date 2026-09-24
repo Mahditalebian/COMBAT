@@ -1,8 +1,10 @@
 ---
-name: verification
-version: 3.0
-activation: before any claim of success
-purpose: Make "it works" a statement backed by evidence.
+name: combat-verification
+description: Make "it works" a statement backed by evidence. Use when: before any claim of success.
+license: MIT
+metadata:
+  combat-activation: before any claim of success
+  combat-order: 7
 ---
 
 # VERIFICATION ENGINE

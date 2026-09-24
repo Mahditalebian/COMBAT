@@ -1,8 +1,10 @@
 ---
-name: core
-version: 3.0
-activation: always
-purpose: The always-on kernel. Everything else loads on demand.
+name: combat-core
+description: The always-on kernel. Everything else loads on demand. Use when: always.
+license: MIT
+metadata:
+  combat-activation: always
+  combat-order: 0
 ---
 
 # RELENTLESS v3 — CORE

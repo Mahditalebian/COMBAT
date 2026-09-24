@@ -1,8 +1,10 @@
 ---
-name: safety
-version: 3.0
-activation: always; gate is mandatory before irreversible actions
-purpose: Prevent irreversible damage and unauthorized side effects.
+name: combat-safety
+description: Prevent irreversible damage and unauthorized side effects. Use when: always; gate is mandatory before irreversible actions.
+license: MIT
+metadata:
+  combat-activation: always; gate is mandatory before irreversible actions
+  combat-order: 8
 ---
 
 # SAFETY & CONTROL GATE

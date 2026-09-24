@@ -1,21 +1,27 @@
 #!/usr/bin/env bash
-# RELENTLESS v3 installer
+# COMBAT installer — for harnesses without native plugin support.
+#
+# If your tool supports plugins, prefer:
+#   /plugin marketplace add Mahditalebian/COMBAT
+#   /plugin install combat@combat
+#
 # Usage:
 #   ./install.sh <target> [--dir PATH] [--global] [--dry-run]
 #   curl -fsSL https://raw.githubusercontent.com/Mahditalebian/COMBAT/main/install.sh | bash -s -- cursor
 #
-# Targets: cursor | claude-code | opencode | codebuff | freebuff | codex |
+# Targets: claude-code | opencode | codebuff | freebuff | cursor | codex |
 #          windsurf | agents-md | copilot | plain
 
 set -euo pipefail
 
-REPO_RAW="${RELENTLESS_RAW:-https://raw.githubusercontent.com/Mahditalebian/COMBAT/main}"
-SKILLS=(core triage reasoning hypothesis evidence deep-search web-intelligence verification safety stop-policy)
+REPO_RAW="${COMBAT_RAW:-https://raw.githubusercontent.com/Mahditalebian/COMBAT/main}"
+SKILLS=(combat-core combat-triage combat-reasoning combat-hypothesis combat-evidence \
+        combat-deep-search combat-web-intelligence combat-verification combat-safety \
+        combat-stop-policy)
+KERNEL=(combat-core combat-triage combat-safety combat-stop-policy)
 
 TARGET="${1:-}"
-DEST=""
-GLOBAL=0
-DRY=0
+DEST=""; GLOBAL=0; DRY=0
 shift || true
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -32,18 +38,18 @@ die()  { printf '\033[1;31merror\033[0m %s\n' "$*" >&2; exit 1; }
 
 usage() {
   cat <<'EOF'
-RELENTLESS v3 — installer
+COMBAT — installer for harnesses without native plugin support
 
-  ./install.sh cursor        -> .cursor/rules/*.mdc          (project)
-  ./install.sh claude-code   -> .claude/skills/<name>/SKILL.md
-  ./install.sh opencode      -> .opencode/skills/<name>/SKILL.md + AGENTS.md
-  ./install.sh codebuff      -> .agents/skills/<name>/SKILL.md + knowledge.md
+  ./install.sh claude-code   -> .claude/skills/<id>/SKILL.md + commands
+  ./install.sh opencode      -> .opencode/skills/<id>/SKILL.md + AGENTS.md
+  ./install.sh codebuff      -> .agents/skills/<id>/SKILL.md + knowledge.md
   ./install.sh freebuff      -> alias of codebuff
-  ./install.sh codex         -> AGENTS.md + .relentless/
+  ./install.sh cursor        -> .cursor/rules/*.mdc
+  ./install.sh codex         -> AGENTS.md + .combat/
   ./install.sh windsurf      -> .windsurf/rules/
-  ./install.sh agents-md     -> AGENTS.md (single file, portable)
+  ./install.sh agents-md     -> single portable AGENTS.md
   ./install.sh copilot       -> .github/copilot-instructions.md
-  ./install.sh plain         -> .relentless/ (raw markdown)
+  ./install.sh plain         -> .combat/
 
 Options:
   --dir PATH   install into PATH instead of the current directory
@@ -56,55 +62,53 @@ EOF
 case "$TARGET" in -h|--help|help) usage; exit 0 ;; esac
 
 ROOT="${DEST:-$PWD}"
-SRC=""
-if [ -d "$(dirname "$0")/skills" ]; then
-  SRC="$(cd "$(dirname "$0")" && pwd)/skills"
+HERE="$(cd "$(dirname "$0")" && pwd)"
+if [ -d "$HERE/skills/combat-core" ]; then
+  SRC="$HERE/skills"; CMD="$HERE/commands"
 else
-  SRC="$(mktemp -d)/skills"; mkdir -p "$SRC"
-  say "fetching skills from $REPO_RAW"
+  TMP="$(mktemp -d)"; SRC="$TMP/skills"; CMD="$TMP/commands"
+  mkdir -p "$SRC" "$CMD"
+  say "fetching COMBAT from $REPO_RAW"
   for s in "${SKILLS[@]}"; do
-    curl -fsSL "$REPO_RAW/skills/$s.md" -o "$SRC/$s.md" || die "download failed: $s.md"
+    mkdir -p "$SRC/$s"
+    curl -fsSL "$REPO_RAW/skills/$s/SKILL.md" -o "$SRC/$s/SKILL.md" || die "download failed: $s"
+  done
+  for c in combat combat-status; do
+    curl -fsSL "$REPO_RAW/commands/$c.md" -o "$CMD/$c.md" || warn "command $c not fetched"
   done
 fi
 
-write() { # write <path> <content-file-or-->
+write() { # stdin -> $1
   local path="$1"
   if [ "$DRY" = 1 ]; then echo "  would write $path"; return; fi
   mkdir -p "$(dirname "$path")"
   cat > "$path"
   echo "  wrote $path"
 }
+skill()    { cat "$SRC/$1/SKILL.md"; }
+strip_fm() { awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$SRC/$1/SKILL.md"; }
+desc_of()  { awk -F': ' '/^description: /{ $1=""; sub(/^: /,""); print; exit}' "$SRC/$1/SKILL.md"; }
 
-strip_fm() { awk 'BEGIN{n=0} /^---$/{n++; next} n>=2' "$1"; }
-desc_of() { awk -F': ' '/^purpose:/{print $2; exit}' "$1"; }
-act_of()  { awk -F': ' '/^activation:/{print $2; exit}' "$1"; }
+install_skilldirs() { # $1 = base dir
+  for s in "${SKILLS[@]}"; do skill "$s" | write "$1/$s/SKILL.md"; done
+}
+install_commands() { # $1 = base dir
+  for c in combat combat-status; do
+    [ -f "$CMD/$c.md" ] && cat "$CMD/$c.md" | write "$1/$c.md"
+  done
+}
+kernel_doc() {
+  for s in "${KERNEL[@]}"; do strip_fm "$s"; printf '\n---\n\n'; done
+  printf '## On-demand skills\n\nLoad these by exact id when their trigger fires:\n\n'
+  for s in "${SKILLS[@]}"; do printf -- '- `%s` — %s\n' "$s" "$(desc_of "$s")"; done
+}
 
 case "$TARGET" in
-  cursor)
-    say "installing Cursor rules -> $ROOT/.cursor/rules"
-    for s in "${SKILLS[@]}"; do
-      f="$SRC/$s.md"; [ -f "$f" ] || continue
-      always="false"; [ "$s" = core ] || [ "$s" = triage ] || [ "$s" = safety ] && always="true"
-      { printf -- '---\ndescription: "RELENTLESS v3 — %s"\nalwaysApply: %s\n---\n\n' "$(desc_of "$f")" "$always"
-        strip_fm "$f"; } | write "$ROOT/.cursor/rules/relentless-$s.mdc"
-    done
-    ;;
   claude-code)
-    base="$ROOT/.claude/skills"; [ "$GLOBAL" = 1 ] && base="$HOME/.claude/skills"
-    say "installing Claude Code skills -> $base"
-    for s in "${SKILLS[@]}"; do
-      f="$SRC/$s.md"; [ -f "$f" ] || continue
-      { printf -- '---\nname: relentless-%s\ndescription: %s Activate when: %s\n---\n\n' \
-          "$s" "$(desc_of "$f")" "$(act_of "$f")"
-        strip_fm "$f"; } | write "$base/relentless-$s/SKILL.md"
-    done
-    ;;
-  windsurf)
-    say "installing Windsurf rules -> $ROOT/.windsurf/rules"
-    for s in "${SKILLS[@]}"; do
-      f="$SRC/$s.md"; [ -f "$f" ] || continue
-      strip_fm "$f" | write "$ROOT/.windsurf/rules/relentless-$s.md"
-    done
+    base="$ROOT/.claude"; [ "$GLOBAL" = 1 ] && base="$HOME/.claude"
+    say "installing Claude Code skills -> $base/skills"
+    install_skilldirs "$base/skills"
+    install_commands  "$base/commands"
     ;;
   opencode)
     base="$ROOT/.opencode/skills"; agents="$ROOT/AGENTS.md"
@@ -112,58 +116,45 @@ case "$TARGET" in
       base="$HOME/.config/opencode/skills"; agents="$HOME/.config/opencode/AGENTS.md"
     fi
     say "installing OpenCode skills -> $base"
-    for s in "${SKILLS[@]}"; do
-      f="$SRC/$s.md"; [ -f "$f" ] || continue
-      { printf -- '---\nname: relentless-%s\ndescription: %s Use when: %s\nlicense: MIT\n---\n\n' \
-          "$s" "$(desc_of "$f")" "$(act_of "$f")"
-        strip_fm "$f"; } | write "$base/relentless-$s/SKILL.md"
-    done
+    install_skilldirs "$base"
     say "writing always-on kernel -> $agents"
-    { for s in core triage safety stop-policy; do strip_fm "$SRC/$s.md"; printf '\n---\n\n'; done
-      printf '## On-demand skills\n\nLoad with the `skill` tool by exact id:\n\n'
-      for s in "${SKILLS[@]}"; do printf -- '- `relentless-%s` — %s\n' "$s" "$(desc_of "$SRC/$s.md")"; done
-    } | write "$agents"
+    kernel_doc | write "$agents"
     ;;
   codebuff|freebuff)
     base="$ROOT/.agents/skills"; know="$ROOT/knowledge.md"
     if [ "$GLOBAL" = 1 ]; then base="$HOME/.agents/skills"; know="$HOME/.knowledge.md"; fi
     say "installing Codebuff/Freebuff skills -> $base"
-    for s in "${SKILLS[@]}"; do
-      f="$SRC/$s.md"; [ -f "$f" ] || continue
-      { printf -- '---\nname: relentless-%s\ndescription: %s Use when: %s\nlicense: MIT\nmetadata:\n  category: reasoning\n---\n\n' \
-          "$s" "$(desc_of "$f")" "$(act_of "$f")"
-        strip_fm "$f"; } | write "$base/relentless-$s/SKILL.md"
-    done
+    install_skilldirs "$base"
     say "writing knowledge file -> $know"
-    { for s in core triage safety stop-policy; do strip_fm "$SRC/$s.md"; printf '\n---\n\n'; done
-      printf '## On-demand skills\n\nInvoke with `/skill:<id>` or let the agent load them:\n\n'
-      for s in "${SKILLS[@]}"; do printf -- '- `relentless-%s` — %s\n' "$s" "$(desc_of "$SRC/$s.md")"; done
-    } | write "$know"
+    kernel_doc | write "$know"
+    ;;
+  cursor)
+    say "installing Cursor rules -> $ROOT/.cursor/rules"
+    for s in "${SKILLS[@]}"; do
+      always="false"
+      case "$s" in combat-core|combat-triage|combat-safety) always="true" ;; esac
+      { printf -- '---\ndescription: "COMBAT — %s"\nalwaysApply: %s\n---\n\n' "$(desc_of "$s")" "$always"
+        strip_fm "$s"; } | write "$ROOT/.cursor/rules/$s.mdc"
+    done
     ;;
   codex|plain)
-    say "installing raw skills -> $ROOT/.relentless"
-    for s in "${SKILLS[@]}"; do
-      f="$SRC/$s.md"; [ -f "$f" ] || continue
-      cat "$f" | write "$ROOT/.relentless/$s.md"
-    done
-    if [ "$TARGET" = codex ]; then
-      { strip_fm "$SRC/core.md"
-        printf '\n## Skill files\n\nLoad on demand from `.relentless/`:\n'
-        for s in "${SKILLS[@]}"; do printf -- '- `.relentless/%s.md` — %s\n' "$s" "$(desc_of "$SRC/$s.md")"; done
-      } | write "$ROOT/AGENTS.md"
-    fi
+    say "installing raw skills -> $ROOT/.combat"
+    for s in "${SKILLS[@]}"; do skill "$s" | write "$ROOT/.combat/$s.md"; done
+    [ "$TARGET" = codex ] && { kernel_doc | write "$ROOT/AGENTS.md"; }
+    ;;
+  windsurf)
+    say "installing Windsurf rules -> $ROOT/.windsurf/rules"
+    for s in "${SKILLS[@]}"; do strip_fm "$s" | write "$ROOT/.windsurf/rules/$s.md"; done
     ;;
   agents-md)
     say "building single-file AGENTS.md -> $ROOT/AGENTS.md"
-    { for s in "${SKILLS[@]}"; do
-        f="$SRC/$s.md"; [ -f "$f" ] || continue
-        strip_fm "$f"; printf '\n---\n\n'
-      done; } | write "$ROOT/AGENTS.md"
+    { for s in "${SKILLS[@]}"; do strip_fm "$s"; printf '\n---\n\n'; done; } | write "$ROOT/AGENTS.md"
     ;;
   copilot)
     say "building Copilot instructions"
-    { for s in core triage reasoning evidence verification safety stop-policy; do
-        strip_fm "$SRC/$s.md"; printf '\n---\n\n'
+    { for s in combat-core combat-triage combat-reasoning combat-evidence \
+               combat-verification combat-safety combat-stop-policy; do
+        strip_fm "$s"; printf '\n---\n\n'
       done; } | write "$ROOT/.github/copilot-instructions.md"
     ;;
   *) die "unknown target '$TARGET' (see --help)" ;;

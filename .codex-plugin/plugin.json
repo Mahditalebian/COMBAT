@@ -1,0 +1,33 @@
+{
+  "name": "combat",
+  "version": "4.0.0",
+  "description": "Universal agent operating core: triage, system modeling, ranked hypotheses, evidence discipline, deep search, web extraction, verification, safety gates and stop policy.",
+  "author": {
+    "name": "Mahditalebian",
+    "url": "https://github.com/Mahditalebian"
+  },
+  "homepage": "https://github.com/Mahditalebian/COMBAT",
+  "repository": "https://github.com/Mahditalebian/COMBAT",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "reasoning",
+    "triage",
+    "hypothesis",
+    "evidence",
+    "deep-search",
+    "web-scraping",
+    "verification",
+    "safety",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "hooks": {},
+  "interface": {
+    "displayName": "COMBAT",
+    "shortDescription": "Decision core for agents: triage, hypotheses, evidence, verification, safety",
+    "longDescription": "COMBAT turns an agent from a fast answerer into a disciplined problem solver. It triages every task, builds a causal model of the system, ranks falsifiable hypotheses instead of guessing, separates facts from assumptions, runs multi-step research and structured web extraction, refuses to claim success without evidence, gates irreversible actions, and stops with an honest report.",
+    "developerName": "Mahditalebian",
+    "category": "Developer Tools"
+  }
+}

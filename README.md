@@ -1,94 +1,94 @@
-# RELENTLESS v3 — Universal Agent Operating Core
+# COMBAT
 
-A modular decision core for autonomous coding/research agents.
-Not a prompt — an operating loop: **triage → frame → model → hypothesize →
-act → verify → learn → stop**, with evidence discipline and a safety gate.
+**Universal agent operating core.** A plugin of 10 composable skills that turn
+an agent from a fast answerer into a disciplined problem solver.
 
-Agents perform better with small, conditionally-activated skills than with one
-giant instruction file, so this ships as 10 independent skills plus installers
-that compile them into whatever format your tool expects.
+Most agent prompts tell the model *what* to be ("be thorough", "be careful").
+COMBAT specifies *how* to proceed: classify the task, model the system, rank
+falsifiable hypotheses, separate facts from assumptions, research properly,
+prove success before claiming it, gate irreversible actions, stop honestly.
 
-## Install
+## Install as a plugin
 
-```bash
-# in your project root
-curl -fsSL https://raw.githubusercontent.com/Mahditalebian/COMBAT/main/install.sh | bash -s -- cursor
+```
+/plugin marketplace add Mahditalebian/COMBAT
+/plugin install combat@combat
 ```
 
-Or clone and run:
+Then use `/combat <task>` to engage the full loop, or let the agent load
+individual skills on demand.
+
+Plugin manifests ship for Claude Code (`.claude-plugin/`), Codex
+(`.codex-plugin/`), Cursor (`.cursor-plugin/`), OpenCode (`.opencode-plugin/`)
+and the shared `.agents/plugins/` marketplace surface.
+
+## Install without a plugin system
 
 ```bash
-git clone https://github.com/Mahditalebian/COMBAT.git
-cd your-project && /path/to/relentless/install.sh claude-code
+curl -fsSL https://raw.githubusercontent.com/Mahditalebian/COMBAT/main/install.sh | bash -s -- claude-code
 ```
 
-| Target | Command | Installs to |
-|---|---|---|
-| Cursor | `install.sh cursor` | `.cursor/rules/relentless-*.mdc` |
-| Claude Code | `install.sh claude-code` | `.claude/skills/relentless-*/SKILL.md` |
-| OpenCode | `install.sh opencode` | `.opencode/skills/relentless-*/SKILL.md` + `AGENTS.md` |
-| Codebuff / Freebuff | `install.sh codebuff` (or `freebuff`) | `.agents/skills/relentless-*/SKILL.md` + `knowledge.md` |
-| Codex / generic | `install.sh codex` | `AGENTS.md` + `.relentless/` |
-| Windsurf | `install.sh windsurf` | `.windsurf/rules/` |
-| Any agent (portable) | `install.sh agents-md` | single `AGENTS.md` |
-| GitHub Copilot | `install.sh copilot` | `.github/copilot-instructions.md` |
-| Raw files | `install.sh plain` | `.relentless/` |
-
-On OpenCode and Codebuff/Freebuff the always-on kernel (`core` + `triage` +
-`safety` + `stop-policy`) goes into `AGENTS.md` / `knowledge.md`, while the
-remaining six skills stay on disk and are pulled in on demand via the `skill`
-tool (`/skill:relentless-hypothesis`). This keeps resident context small.
-
-Flags: `--dir PATH` · `--global` (user-level, where supported) · `--dry-run`.
-
-```bash
-./install.sh claude-code --global      # install for all projects
-./install.sh cursor --dry-run          # preview, write nothing
-```
-
-## What's inside
-
-| Skill | Responsibility |
+| Target | Installs to |
 |---|---|
-| `core` | always-on kernel: prime directives + the loop |
-| `triage` | TRIVIAL / STANDARD / COMPLEX classification, escalation triggers |
-| `reasoning` | task frame, causal system model, state update, output policy |
-| `hypothesis` | ranked falsifiable hypotheses, experiment loop, failure analyzer, anti-loop |
-| `evidence` | 6-tier evidence hierarchy, facts-vs-assumptions ledger |
-| `deep-search` | question decomposition, 8-step research, search expansion ladder |
-| `web-intelligence` | source preference (API → HTML), extraction pipeline, scraping ethics |
-| `verification` | verification depth ∝ cost of being wrong |
-| `safety` | blast radius / rollback gate before irreversible actions |
-| `stop-policy` | stop conditions + honest final report format |
+| `claude-code` | `.claude/skills/<id>/SKILL.md` + `.claude/commands/` |
+| `opencode` | `.opencode/skills/<id>/SKILL.md` + `AGENTS.md` |
+| `codebuff` / `freebuff` | `.agents/skills/<id>/SKILL.md` + `knowledge.md` |
+| `cursor` | `.cursor/rules/*.mdc` |
+| `codex` | `AGENTS.md` + `.combat/` |
+| `windsurf` | `.windsurf/rules/` |
+| `agents-md` | single portable `AGENTS.md` |
+| `copilot` | `.github/copilot-instructions.md` |
+| `plain` | `.combat/` |
 
-Loading strategy: TRIVIAL loads `core` + `triage`; STANDARD adds `reasoning`,
-`evidence`, `verification`; COMPLEX loads everything. `safety` and
-`stop-policy` are always in scope.
+Flags: `--dir PATH` · `--global` · `--dry-run`.
+
+## The 10 skills
+
+| Skill | Enforces |
+|---|---|
+| `combat-core` | always-on kernel: prime directives and the loop |
+| `combat-triage` | TRIVIAL / STANDARD / COMPLEX before any effort is spent |
+| `combat-reasoning` | task frame, causal system model, state update, output policy |
+| `combat-hypothesis` | ranked falsifiable hypotheses, ≤2 attempts per strategy class |
+| `combat-evidence` | 6-tier evidence hierarchy; assumptions never become facts |
+| `combat-deep-search` | question decomposition, 8-step research, expansion ladder |
+| `combat-web-intelligence` | API before scraping, structured extraction, validation |
+| `combat-verification` | verification depth ∝ cost of being wrong |
+| `combat-safety` | blast radius and rollback gate before irreversible actions |
+| `combat-stop-policy` | stop conditions and an honest final report |
+
+Only `combat-core` needs to be resident (~50 lines). The other ~600 lines load
+on demand, so the framework costs almost nothing when the task is trivial.
+
+## Commands
+
+| Command | Does |
+|---|---|
+| `/combat <task>` | Runs the full loop on the task, loading skills as triggers fire |
+| `/combat-status` | Prints current understanding, evidence ledger, eliminated possibilities, confidence, next action |
+
+## The loop
+
+```
+TRIAGE → FRAME → MODEL → HYPOTHESIZE → RANK
+→ SEARCH / EXTRACT (if needed) → SAFETY GATE → ACT → OBSERVE → VERIFY
+→ success? yes: REPORT
+          no:  LEARN → UPDATE STATE → CHANGE DIMENSION → REPEAT
+```
 
 ## Layout
 
 ```
-relentless/
-├── install.sh          multi-target installer
-├── relentless.json     machine-readable manifest
-├── skills/             the 10 source skills (single source of truth)
-└── adapters/           notes for LangGraph / OpenAI Agents integration
+COMBAT/
+├── .claude-plugin/     plugin.json + marketplace.json
+├── .codex-plugin/      .cursor-plugin/  .opencode-plugin/
+├── .agents/plugins/    shared marketplace surface
+├── skills/<id>/SKILL.md   the 10 skills — single source of truth
+├── commands/           /combat, /combat-status
+└── install.sh          fallback installer for non-plugin harnesses
 ```
 
-Edit files in `skills/` only, then re-run the installer to recompile.
-
-## Forking to your own account
-
-```bash
-gh repo fork Mahditalebian/COMBAT --clone
-# then point REPO_RAW in install.sh at your fork
-```
-
-Pin a version instead of tracking `main`:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Mahditalebian/COMBAT/v3.0.0/install.sh | bash -s -- cursor
-```
+Edit `skills/` only. Everything else is generated or references it.
 
 ## License
 

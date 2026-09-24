@@ -1,8 +1,10 @@
 ---
-name: reasoning
-version: 3.0
-activation: STANDARD | COMPLEX
-purpose: Frame the task, model the system, and keep an evolving state.
+name: combat-reasoning
+description: Frame the task, model the system, and keep an evolving state. Use when: STANDARD | COMPLEX.
+license: MIT
+metadata:
+  combat-activation: STANDARD | COMPLEX
+  combat-order: 2
 ---
 
 # 1. TASK FRAME ENGINE

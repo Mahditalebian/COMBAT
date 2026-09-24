@@ -1,0 +1,33 @@
+{
+  "name": "combat",
+  "description": "Marketplace for the COMBAT agent operating core",
+  "owner": {
+    "name": "Mahditalebian",
+    "url": "https://github.com/Mahditalebian"
+  },
+  "plugins": [
+    {
+      "name": "combat",
+      "description": "Universal agent operating core: triage, system modeling, ranked hypotheses, evidence discipline, deep search, web extraction, verification, safety gates and stop policy.",
+      "version": "4.0.0",
+      "source": "./",
+      "author": {
+        "name": "Mahditalebian",
+        "url": "https://github.com/Mahditalebian"
+      },
+      "strict": false,
+      "skills": [
+        "./skills/combat-core",
+        "./skills/combat-triage",
+        "./skills/combat-reasoning",
+        "./skills/combat-hypothesis",
+        "./skills/combat-evidence",
+        "./skills/combat-deep-search",
+        "./skills/combat-web-intelligence",
+        "./skills/combat-verification",
+        "./skills/combat-safety",
+        "./skills/combat-stop-policy"
+      ]
+    }
+  ]
+}
