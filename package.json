@@ -1,6 +1,6 @@
 {
   "name": "combat-core",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "description": "COMBAT \u2014 universal agent operating core: triage, system modeling, ranked hypotheses, evidence discipline, deep search, web extraction, verification, safety gates and stop policy.",
   "type": "module",
   "main": "./plugin/opencode.js",
