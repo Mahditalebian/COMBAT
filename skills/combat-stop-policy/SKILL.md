@@ -1,10 +1,10 @@
 ---
 name: combat-stop-policy
-description: Know when to stop, and report honestly. Use when: always.
+description: "Know when to stop, and report honestly. Use when: always"
 license: MIT
 metadata:
-  combat-activation: always
-  combat-order: 9
+  combat-activation: "always"
+  combat-order: "9"
 ---
 
 # STOP ENGINE

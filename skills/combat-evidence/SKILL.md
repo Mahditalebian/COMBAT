@@ -1,10 +1,10 @@
 ---
 name: combat-evidence
-description: Keep facts, observations, and assumptions strictly separated. Use when: always.
+description: "Keep facts, observations, and assumptions strictly separated. Use when: always"
 license: MIT
 metadata:
-  combat-activation: always
-  combat-order: 4
+  combat-activation: "always"
+  combat-order: "4"
 ---
 
 # EVIDENCE MANAGEMENT ENGINE

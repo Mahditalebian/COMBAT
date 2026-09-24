@@ -1,10 +1,10 @@
 ---
 name: combat-deep-search
-description: Multi-step research with source triangulation and confidence output. Use when: when required information is missing, uncertain, or time-sensitive.
+description: "Multi-step research with source triangulation and confidence output. Use when: when required information is missing, uncertain, or time-sensitive"
 license: MIT
 metadata:
-  combat-activation: when required information is missing, uncertain, or time-sensitive
-  combat-order: 5
+  combat-activation: "when required information is missing, uncertain, or time-sensitive"
+  combat-order: "5"
 ---
 
 # DEEP SEARCH INTELLIGENCE ENGINE

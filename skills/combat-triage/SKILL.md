@@ -1,10 +1,10 @@
 ---
 name: combat-triage
-description: Classify every incoming task before spending any effort on it. Use when: always.
+description: "Classify every incoming task before spending any effort on it. Use when: always"
 license: MIT
 metadata:
-  combat-activation: always
-  combat-order: 1
+  combat-activation: "always"
+  combat-order: "1"
 ---
 
 # TRIAGE ENGINE

@@ -1,10 +1,10 @@
 ---
 name: combat-core
-description: The always-on kernel. Everything else loads on demand. Use when: always.
+description: "The always-on kernel. Everything else loads on demand. Use when: always"
 license: MIT
 metadata:
-  combat-activation: always
-  combat-order: 0
+  combat-activation: "always"
+  combat-order: "0"
 ---
 
 # RELENTLESS v3 — CORE

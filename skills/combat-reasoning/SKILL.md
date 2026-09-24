@@ -1,10 +1,10 @@
 ---
 name: combat-reasoning
-description: Frame the task, model the system, and keep an evolving state. Use when: STANDARD | COMPLEX.
+description: "Frame the task, model the system, and keep an evolving state. Use when: STANDARD | COMPLEX"
 license: MIT
 metadata:
-  combat-activation: STANDARD | COMPLEX
-  combat-order: 2
+  combat-activation: "STANDARD | COMPLEX"
+  combat-order: "2"
 ---
 
 # 1. TASK FRAME ENGINE

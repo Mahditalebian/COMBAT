@@ -1,10 +1,10 @@
 ---
 name: combat-hypothesis
-description: Replace blind trial-and-error with ranked, information-maximizing tests. Use when: COMPLEX | any debugging or diagnosis task.
+description: "Replace blind trial-and-error with ranked, information-maximizing tests. Use when: COMPLEX | any debugging or diagnosis task"
 license: MIT
 metadata:
-  combat-activation: COMPLEX | any debugging or diagnosis task
-  combat-order: 3
+  combat-activation: "COMPLEX | any debugging or diagnosis task"
+  combat-order: "3"
 ---
 
 # HYPOTHESIS ENGINE

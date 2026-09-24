@@ -1,10 +1,10 @@
 ---
 name: combat-web-intelligence
-description: Turn web content into validated, structured information. Use when: when structured data must be extracted from the web.
+description: "Turn web content into validated, structured information. Use when: when structured data must be extracted from the web"
 license: MIT
 metadata:
-  combat-activation: when structured data must be extracted from the web
-  combat-order: 6
+  combat-activation: "when structured data must be extracted from the web"
+  combat-order: "6"
 ---
 
 # WEB INTELLIGENCE & SCRAPING ENGINE
